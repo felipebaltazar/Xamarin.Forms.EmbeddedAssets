@@ -17,10 +17,11 @@ namespace Xamarin.Forms.EmbeddedAssets
 
             var (hasAsset, filePath) = AssetRegistrar.HasAsset(Source);
 
+            var htmlSourceStr = Source;
             if (hasAsset)
-                return filePath;
+                htmlSourceStr = filePath;
 
-            return Source;
+            return (Device.RuntimePlatform == Device.Android ? "file:///" : string.Empty ) +htmlSourceStr;
         }
     }
 }
