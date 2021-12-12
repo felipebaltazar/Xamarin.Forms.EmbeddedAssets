@@ -11,11 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\HtmlPages\images\xam_monkey.png" />
     <None Remove="Resources\MyPage.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\MyPage.html" />
+    <EmbeddedResource Include="Resources\HtmlPages\images\xam_monkey.png" />
+    <EmbeddedResource Include="Resources\HtmlPages\MyPage.html" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace Xamarin.Forms.EmbeddedAssets
             if (hasAsset)
                 htmlSourceStr = filePath;
 
-            return (Device.RuntimePlatform == Device.Android ? "file:///" : string.Empty ) +htmlSourceStr;
+            return (Device.RuntimePlatform == Device.Android ? "file:///" : string.Empty ) + htmlSourceStr;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Xamarin.Forms;
-using XFEmbeddedAssets = Xamarin.Forms.EmbeddedAssets.EmbeddedAssets;
 
 namespace EmbeddedAssets.Sample
 {
@@ -8,7 +7,6 @@ namespace EmbeddedAssets.Sample
         public App()
         {
             InitializeComponent();
-            XFEmbeddedAssets.Init();
 
             MainPage = new MainPage();
         }

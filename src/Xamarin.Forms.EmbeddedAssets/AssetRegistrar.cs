@@ -7,36 +7,42 @@ using System.Reflection;
 
 namespace Xamarin.Forms.EmbeddedAssets
 {
-    public static class AssetRegistrar
+    internal static class AssetRegistrar
     {
-        internal static readonly Dictionary<string, (ExportAssetAttribute attribute, Assembly assembly)> EmbeddedFonts =
+        internal static readonly Dictionary<string, (ExportAssetAttribute attribute, Assembly assembly)> EmbeddedAssets =
             new Dictionary<string, (ExportAssetAttribute attribute, Assembly assembly)>();
 
         private static Dictionary<string, (bool, string)> assetLookupCache = new Dictionary<string, (bool, string)>();
 
         private static readonly EmbeddedAssetLoader embeddedAssetLoader = new EmbeddedAssetLoader();
 
-        public static void Register(ExportAssetAttribute fontAttribute, Assembly assembly)
+        internal static void Register(ExportAssetAttribute assetAttribute, Assembly assembly)
         {
-            EmbeddedFonts[fontAttribute.AssetFileName] = (fontAttribute, assembly);
+            EmbeddedAssets[assetAttribute.AssetFileName] = (assetAttribute, assembly);
         }
 
-        public static (bool hasAsset, string fontPath) HasAsset(string asset)
+        internal static (bool hasAsset, string assetPath) HasAsset(string asset)
         {
             try
             {
-                if (!EmbeddedFonts.TryGetValue(asset, out var foundFont))
+                if (!EmbeddedAssets.TryGetValue(asset, out var foundAsset))
                     return (false, null);
 
                 if (assetLookupCache.TryGetValue(asset, out var foundResult))
                     return foundResult;
 
+                var assetInfo = GetEmbeddedResourceStream(foundAsset.assembly, foundAsset.attribute.AssetFileName);
 
-                var fontStream = GetEmbeddedResourceStream(foundFont.assembly, foundFont.attribute.AssetFileName);
+                var embeededAsset = new EmbeddedAsset {
+                    AssetName = foundAsset.attribute.AssetFileName,
+                    ResourceStream = assetInfo.Stream,
+                    FolderName = assetInfo.Folder,
+                    LoadAssociatedResources = foundAsset.attribute.LoadAssociatedInFolder,
+                    AssociatedResources = GetAssociatedEmbeddedResourcesStream(foundAsset.assembly, foundAsset.attribute.AssetFileName)
+                };
 
-                var result = embeddedAssetLoader.LoadFont(new EmbeddedAsset { FontName = foundFont.attribute.AssetFileName, ResourceStream = fontStream });
+                var result = embeddedAssetLoader.LoadAsset(embeededAsset);
                 return assetLookupCache[asset] = result;
-
             }
             catch (Exception ex)
             {
@@ -46,7 +52,35 @@ namespace Xamarin.Forms.EmbeddedAssets
             return assetLookupCache[asset] = (false, null);
         }
 
-        private static Stream GetEmbeddedResourceStream(Assembly assembly, string resourceFileName)
+        private static IEnumerable<EmbeddedAsset> GetAssociatedEmbeddedResourcesStream(Assembly assembly, string assetFileName)
+        {
+            var resourceNames = assembly.GetManifestResourceNames();
+            var resourcePath = resourceNames
+               .FirstOrDefault(x => x.EndsWith(assetFileName, StringComparison.CurrentCultureIgnoreCase));
+
+            if (string.IsNullOrWhiteSpace(resourcePath))
+                yield break;
+
+            var prefix = resourcePath.Replace(assetFileName, string.Empty);
+            foreach (var resource in resourceNames.Where(r => r.StartsWith(prefix) && !r.EndsWith(assetFileName)))
+            {
+                var assemblyName = assembly.GetName().Name;
+                var extension = Path.GetExtension(resource);
+
+                var resourceWithoutExtension = resource.Replace(extension, string.Empty);
+                var resourceDirectory = resourceWithoutExtension.Substring(0, resourceWithoutExtension.LastIndexOf("."));
+                var resourceWithoutAssembly = resourceDirectory.Replace(assemblyName, string.Empty).Trim('.');
+                var folder = resourceWithoutAssembly.Replace(".", "/");
+
+                yield return new EmbeddedAsset {
+                    AssetName = resource.Replace(resourceDirectory, string.Empty).Trim('.'),
+                    FolderName = folder,
+                    ResourceStream = assembly.GetManifestResourceStream(resource)
+                };
+            }
+        }
+
+        private static (string Folder, Stream Stream) GetEmbeddedResourceStream(Assembly assembly, string resourceFileName)
         {
             var resourceNames = assembly.GetManifestResourceNames();
 
@@ -60,7 +94,14 @@ namespace Xamarin.Forms.EmbeddedAssets
             if (resourcePaths.Length > 1)
                 resourcePaths = resourcePaths.Where(x => IsFile(x, resourceFileName)).ToArray();
 
-            return assembly.GetManifestResourceStream(resourcePaths.FirstOrDefault());
+            var resourcePath = resourcePaths.First();
+            var assemblyName = assembly.GetName().Name;
+            var folder = resourcePath.Replace(resourceFileName, string.Empty)
+                                     .Replace(assemblyName, string.Empty)
+                                     .Trim('.')
+                                     .Replace(".", "/");
+
+            return (folder, assembly.GetManifestResourceStream(resourcePath));
         }
 
         private static bool IsFile(string path, string file)
@@ -70,5 +111,6 @@ namespace Xamarin.Forms.EmbeddedAssets
 
             return path.Replace(file, "").EndsWith(".", StringComparison.Ordinal);
         }
+
     }
 }

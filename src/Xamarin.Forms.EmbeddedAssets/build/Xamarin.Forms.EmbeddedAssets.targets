@@ -1,0 +1,6 @@
+﻿<Project>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)PreserveEmbeddedAssets.cs"
+             Visible="false" />
+  </ItemGroup>
+</Project>

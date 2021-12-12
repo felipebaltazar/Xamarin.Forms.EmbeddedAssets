@@ -4,21 +4,31 @@ using System.IO;
 
 namespace Xamarin.Forms.EmbeddedAssets
 {
-    public class EmbeddedAssetLoader
+    internal class EmbeddedAssetLoader
     {
-        public (bool success, string filePath) LoadFont(EmbeddedAsset asset)
+        internal (bool success, string filePath) LoadAsset(EmbeddedAsset asset)
         {
             var tmpdir = Path.GetTempPath();
-            var filePath = Path.Combine(tmpdir, asset.FontName);
+
+            var directoryPath = Path.Combine(tmpdir, asset.FolderName);
+            var filePath = Path.Combine(directoryPath, asset.AssetName);
 
             if (File.Exists(filePath))
                 return (true, filePath);
 
+            if(!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+
             try
             {
-                using (var fileStream = File.Create(filePath))
+                ProcessResourceStream(asset.ResourceStream, filePath);
+
+                if (asset.LoadAssociatedResources)
                 {
-                    asset.ResourceStream.CopyTo(fileStream);
+                    foreach (var resource in asset.AssociatedResources)
+                    {
+                        LoadAsset(resource);
+                    }
                 }
 
                 return (true, filePath);
@@ -30,6 +40,14 @@ namespace Xamarin.Forms.EmbeddedAssets
             }
 
             return (false, null);
+        }
+
+        private static void ProcessResourceStream(Stream resourceStream, string filePath)
+        {
+            using (var fileStream = File.Create(filePath))
+            {
+                resourceStream.CopyTo(fileStream);
+            }
         }
     }
 }

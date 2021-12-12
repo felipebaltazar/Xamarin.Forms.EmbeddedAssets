@@ -1,0 +1,69 @@
+name: Build FeatureFlag.Management
+
+on: [pull_request]
+    
+jobs:
+  build:
+
+    name: Build packages solution
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.x
+    - name: Build with dotnet
+      run: dotnet build src/Xamarin.Forms.EmbeddedAssets.sln --configuration Release
+
+  analyze:
+
+    name: Analyze code quality
+    runs-on: ubuntu-latest
+
+    strategy:
+        fail-fast: false
+        matrix:
+            language: [ 'csharp' ]
+        
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.x
+
+    - name: Build solution
+      run: dotnet build src/Xamarin.Forms.EmbeddedAssets.sln --configuration Release
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+  unitTests:
+
+    name: Run unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET5
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Run dotnet test
+      run: dotnet test tests/Xamarin.Forms.EmbeddedAssets.Tests.csproj -v n /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --configuration Debug --collect:"XPlat Code Coverage"
+
+    - name: Send report to codecov.io
+      run: bash <(curl -s https://codecov.io/bash)
+      env:
+        CODECOV_TOKEN: 7144827c-4de1-4b6b-a0f4-5422ce44d52f

@@ -1,14 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
+using System.Runtime.CompilerServices;
+using Xamarin.Forms.Internals;
+
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    public sealed class ModuleInitializerAttribute : Attribute
+    {
+    }
+}
 
 namespace Xamarin.Forms.EmbeddedAssets
 {
-    public static class EmbeddedAssets
+    [Preserve]
+    internal static class EmbeddedAssets
     {
-        public static void Init()
+        [Preserve]
+        [ModuleInitializer]
+        internal static void Init()
         {
             var assemblies = Device.GetAssemblies();
             var defaultRendererAssembly = Device.PlatformServices.GetType().GetTypeInfo().Assembly;

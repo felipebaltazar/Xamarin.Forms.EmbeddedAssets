@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Forms.EmbeddedAssets", "Xamarin.Forms.EmbeddedAssets\Xamarin.Forms.EmbeddedAssets.csproj", "{039A4849-2D44-42AA-93EC-943BFBA3E1A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.EmbeddedAssets", "Xamarin.Forms.EmbeddedAssets\Xamarin.Forms.EmbeddedAssets.csproj", "{039A4849-2D44-42AA-93EC-943BFBA3E1A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AF0BEFF6-44D0-4842-BFE1-90494767AC13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.EmbeddedAssets.Tests", "..\tests\Xamarin.Forms.EmbeddedAssets.Tests.csproj", "{F36D90F5-1590-4BE7-B5EB-5312128B2335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{039A4849-2D44-42AA-93EC-943BFBA3E1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{039A4849-2D44-42AA-93EC-943BFBA3E1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{039A4849-2D44-42AA-93EC-943BFBA3E1A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F36D90F5-1590-4BE7-B5EB-5312128B2335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F36D90F5-1590-4BE7-B5EB-5312128B2335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F36D90F5-1590-4BE7-B5EB-5312128B2335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F36D90F5-1590-4BE7-B5EB-5312128B2335}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F36D90F5-1590-4BE7-B5EB-5312128B2335} = {AF0BEFF6-44D0-4842-BFE1-90494767AC13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {065D9C00-97D9-47A8-A43B-F098C0D2E69F}

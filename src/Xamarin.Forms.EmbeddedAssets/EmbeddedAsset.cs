@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Xamarin.Forms.EmbeddedAssets
 {
-    public struct EmbeddedAsset
+    internal struct EmbeddedAsset
     {
-        public string FontName
+        public string AssetName
         {
             get; set;
         }
@@ -12,6 +13,23 @@ namespace Xamarin.Forms.EmbeddedAssets
         public Stream ResourceStream
         {
             get; set;
+        }
+
+        public IEnumerable<EmbeddedAsset> AssociatedResources
+        {
+            get; set;
+        }
+
+        public bool LoadAssociatedResources
+        {
+            get;
+            set;
+        }
+
+        public string FolderName
+        {
+            get;
+            set;
         }
     }
 }
