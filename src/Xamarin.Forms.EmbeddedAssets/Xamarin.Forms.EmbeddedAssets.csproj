@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/felipebaltazar/Xamarin.Forms.EmbeddedAssets</RepositoryUrl>
     <PackageTags>embedded, xamarin, xamarin.forms, assets, cross</PackageTags>
     <Description>Embedded assets for Xamarin.Forms</Description>
-    <Version>1.0.0-pre</Version>
+    <Version>1.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <PackageIcon>Icon.png</PackageIcon>
