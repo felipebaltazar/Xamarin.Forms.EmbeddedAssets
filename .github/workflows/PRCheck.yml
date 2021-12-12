@@ -1,6 +1,10 @@
 name: Build Xamarin.Forms.EmbeddedAssets
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - main
+      - develop
     
 jobs:
   build:
