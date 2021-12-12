@@ -3,7 +3,7 @@ Free yourself from platform specifc assets
 
 ## Getting started
 
-- Include your assets as embeddded resource on your NetStandard project
+- Include your assets as embedded resource on your NetStandard project
 
 - Declare all assets that you need to use
 
