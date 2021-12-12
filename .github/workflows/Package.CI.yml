@@ -31,8 +31,8 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Change version on csproj file
-      run: sed -i -e 's/Version>[0-9a-z.-]*</Version>'$GITVERSION_NUGETVERSION'</' ./src/Xamarin.Forms.EmbeddedAssets/Xamarin.Forms.EmbeddedAssets.csproj
+    #- name: Change version on csproj file
+    #  run: sed -i -e 's/Version>[0-9a-z.-]*</Version>'$GITVERSION_NUGETVERSION'</' ./src/Xamarin.Forms.EmbeddedAssets/Xamarin.Forms.EmbeddedAssets.csproj
       
     - name: Build
       run: dotnet build ./src/Xamarin.Forms.EmbeddedAssets/Xamarin.Forms.EmbeddedAssets.csproj --configuration Release
