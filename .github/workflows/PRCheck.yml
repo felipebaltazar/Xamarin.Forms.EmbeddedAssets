@@ -1,4 +1,4 @@
-name: Build FeatureFlag.Management
+name: Build Xamarin.Forms.EmbeddedAssets
 
 on: [pull_request]
     
