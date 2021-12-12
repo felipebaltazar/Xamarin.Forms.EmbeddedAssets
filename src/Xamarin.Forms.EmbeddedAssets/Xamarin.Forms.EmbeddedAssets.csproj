@@ -13,7 +13,7 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <PackageIcon>Icon.png</PackageIcon>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
