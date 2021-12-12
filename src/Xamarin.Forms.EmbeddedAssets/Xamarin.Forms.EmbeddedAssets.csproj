@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
-    <None Include="..\..\Images\Icon.png">
+    <None Include="..\..\images\Icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
